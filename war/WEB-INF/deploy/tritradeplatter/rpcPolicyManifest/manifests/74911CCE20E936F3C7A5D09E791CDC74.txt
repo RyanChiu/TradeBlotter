@@ -1,0 +1,2 @@
+serviceClass: com.zrd.zr.gwt.tritrade.client.TriTradeService
+path: E0635D1C890A284B247C86D6E3E753E3.gwt.rpc

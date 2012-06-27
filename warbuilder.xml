@@ -1,0 +1,19 @@
+<project name="TradeBlotter" basedir="." default="default">
+ 
+    <target name="default" depends="buildwar,deploy"></target>
+ 
+    <target name="buildwar">
+        <war basedir="war" destfile="TradeBlotter.war" webxml="war/WEB-INF/web.xml">
+            <exclude name="WEB-INF/**" />
+            <webinf dir="war/WEB-INF/">
+                <include name="**/*.jar" />
+                <include name="classes/**" />
+            </webinf>
+        </war>
+    </target>
+ 
+    <target name="deploy">
+        <copy file="TradeBlotter.war" todir="/var/lib/tomcat6/webapps/." />
+    </target>
+ 
+</project>
