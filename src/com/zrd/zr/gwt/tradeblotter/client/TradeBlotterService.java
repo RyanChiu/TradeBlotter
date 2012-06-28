@@ -11,5 +11,5 @@ public interface TradeBlotterService extends RemoteService {
 	String tradeBlotterServer(String input) throws IllegalArgumentException;
 	String loginServer(String usr, String pwd) throws IllegalArgumentException;
 	String testServer(int uid, String name, String blurb) throws IllegalArgumentException;
-	String testServer() throws IllegalArgumentException;
+	String matrixServer(String methodName) throws IllegalArgumentException;
 }

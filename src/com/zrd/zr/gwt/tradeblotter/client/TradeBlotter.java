@@ -52,6 +52,9 @@ public class TradeBlotter implements EntryPoint {
 		final Button logoutButton = new Button("Logout");
 		logoutButton.addStyleName("linkStyleButton");
 		RootPanel.get("logoutButtonContainer").add(logoutButton);
+		final Button connDisconnButton = new Button("Connect");
+		connDisconnButton.addStyleName("linkStyleButton");
+		RootPanel.get("connDisconnButtonContainer").add(connDisconnButton);
 		final Button readIniButton = new Button("Read Ini");
 		readIniButton.addStyleName("fullWidthButton");
 		RootPanel.get("readIniButtonContainer").add(readIniButton);
@@ -170,7 +173,7 @@ public class TradeBlotter implements EntryPoint {
 							// TODO Auto-generated method stub
 							if (result.equals("logged in")) {
 								RootPanel.get("loginPanel").setVisible(false);
-								RootPanel.get("mainPanel").setVisible(true);
+								RootPanel.get("mainPanelAccess").setVisible(true);
 								loginErrorLabel.setHTML("");
 							} else {
 								loginErrorLabel.setHTML(
@@ -197,10 +200,81 @@ public class TradeBlotter implements EntryPoint {
 				msgDlg.hide();
 				
 				RootPanel.get("loginPanel").setVisible(true);
-				RootPanel.get("mainPanel").setVisible(false);
+				RootPanel.get("mainPanelAccess").setVisible(false);
+				RootPanel.get("mainPanelCmds").setVisible(false);
 				/*
 				 * then we cancel the sending command
 				 */
+			}
+			
+		});
+		
+		connDisconnButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				if (connDisconnButton.isEnabled()) {
+					if (connDisconnButton.getText().equals("Connect")) {
+						connDisconnButton.setText("Connecting...");
+						connDisconnButton.setEnabled(false);
+						RootPanel.get("mainPanelCmds").setVisible(false);
+						mTradeBlotterService.matrixServer(
+							"connect",
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									connDisconnButton.setText("Connect");
+									connDisconnButton.setEnabled(true);
+									statusHTML.setHTML(caught.toString());
+									RootPanel.get("mainPanelCmds").setVisible(false);
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+									connDisconnButton.setText("Disconnect");
+									connDisconnButton.setEnabled(true);
+									statusHTML.setHTML("<font color='green'>connected!</font>");
+									RootPanel.get("mainPanelCmds").setVisible(true);
+								}
+								
+							}
+						);
+					} else {
+						connDisconnButton.setText("Disconnecting...");
+						connDisconnButton.setEnabled(false);
+						RootPanel.get("mainPanelCmds").setVisible(true);
+						mTradeBlotterService.matrixServer(
+							"disconnect",
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									connDisconnButton.setText("Disconnect");
+									connDisconnButton.setEnabled(true);
+									statusHTML.setHTML(caught.toString());
+									RootPanel.get("mainPanelCmds").setVisible(true);
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+									connDisconnButton.setText("Connect");
+									connDisconnButton.setEnabled(true);
+									statusHTML.setHTML("<font color='red'>disconnected!</font>");
+									RootPanel.get("mainPanelCmds").setVisible(false);
+								}
+								
+							}
+						);
+					}
+				} else {
+					
+				}
 			}
 			
 		});
@@ -238,6 +312,37 @@ public class TradeBlotter implements EntryPoint {
 							msgInfoHTML.setHTML(result);
 							msgDlg.center();
 							msgOKButton.setFocus(true);
+						}
+						
+					}
+				);
+			}
+			
+		});
+		
+		runPauseButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				runPauseButton.setEnabled(false);
+				statusHTML.setHTML("Processing exit...");
+				mTradeBlotterService.matrixServer(
+					"ping",
+					new AsyncCallback<String>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							runPauseButton.setEnabled(true);
+							statusHTML.setHTML("<b>Failed~~~</b><br/>" + caught.toString());
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
+							runPauseButton.setEnabled(true);
+							statusHTML.setHTML("<b>Succeed~~~</b><br/>" + result);
 						}
 						
 					}
@@ -304,36 +409,6 @@ public class TradeBlotter implements EntryPoint {
 						
 					}
 				);
-				
-				runPauseButton.addClickHandler(new ClickHandler() {
-
-					@Override
-					public void onClick(ClickEvent event) {
-						// TODO Auto-generated method stub
-						runPauseButton.setEnabled(false);
-						statusHTML.setHTML("Processing exit...");
-						mTradeBlotterService.testServer(
-							new AsyncCallback<String>() {
-
-								@Override
-								public void onFailure(Throwable caught) {
-									// TODO Auto-generated method stub
-									runPauseButton.setEnabled(true);
-									statusHTML.setHTML("<b>Failed~~~</b><br/>" + caught.toString());
-								}
-
-								@Override
-								public void onSuccess(String result) {
-									// TODO Auto-generated method stub
-									runPauseButton.setEnabled(true);
-									statusHTML.setHTML("<b>Succeed~~~</b><br/>" + result);
-								}
-								
-							}
-						);
-					}
-					
-				});
 			}
 			
 		});

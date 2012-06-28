@@ -9,9 +9,9 @@ import org.apache.thrift.transport.TTransportException;
 
 import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterService;
 import com.zrd.zr.gwt.tradeblotter.shared.FieldVerifier;
-import com.zrd.zr.thrift.Control;
-import com.zrd.zr.thrift.UserProfile;
-import com.zrd.zr.thrift.UserStorage;
+import com.zrd.zr.thrift.tradeblotter.Control;
+import com.zrd.zr.thrift.tradeblotter.UserProfile;
+import com.zrd.zr.thrift.tradeblotter.UserStorage;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -21,25 +21,48 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 		TradeBlotterService {
 
+	private TSocket mTradeBlotterConnection;
+	private Control.Client mTradeBlotterClient;
+	
 	@Override
-	public String testServer() throws IllegalArgumentException {
+	public String matrixServer(String methodName) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
-		TTransport transport;
-		try {
-			transport = new TSocket("localhost", 9090);
-			TProtocol protocol = new TBinaryProtocol(transport);
-			Control.Client client = new Control.Client(protocol);
-			transport.open();
-			String result;
-			client.exit();
-			result = "<font color='blue'>\"exit\" executed.</font><br/>";
-			transport.close();
-			return result;
-		} catch (TTransportException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException("TTransportException: " + e.toString());
-		} catch (TException e) {
-			throw new IllegalArgumentException("TException: " + e.toString());
+		if (methodName.equals("ping")) {
+			if (isConnected()) {
+				try {
+					mTradeBlotterClient.ping();
+					return "<font color='blue'>\"ping\" executed.</font><br/>";
+				} catch (TException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					throw new IllegalArgumentException("<font color='red'>TException: " + e.toString() + "</font>");
+				}
+				
+			} else {
+				throw new IllegalArgumentException("<font color='red'>Not connected, please make connection.</font><br/>");
+			}
+		} else if (methodName.equals("connect")) {
+			if (isConnected()) {
+				return "connected";
+			} else {
+				try {
+					connect();
+					return "connected";
+				} catch (TTransportException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					throw new IllegalArgumentException(e.toString());
+				}
+			}
+		} else if (methodName.equals("disconnect")) {
+			if (isConnected()) {
+				mTradeBlotterConnection.close();
+				return "disconnected";
+			} else {
+				return "disconnected";
+			}
+		} else {
+			throw new IllegalArgumentException("<font color='red'><b>Illegal method \"" + methodName + "\"</b></font>");
 		}
 	}
 
@@ -125,4 +148,25 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 				.replaceAll(">", "&gt;");
 	}
 
+	private void connect() throws TTransportException {
+		if (mTradeBlotterConnection == null) {
+			mTradeBlotterConnection = new TSocket("localhost", 9090);
+			TProtocol protocol = new TBinaryProtocol(mTradeBlotterConnection);
+			mTradeBlotterClient = new Control.Client(protocol);
+			mTradeBlotterConnection.open();
+		} else {
+			if (!mTradeBlotterConnection.isOpen()) {
+				mTradeBlotterConnection.open();
+			}
+		}
+	}
+	
+	private boolean isConnected() {
+		if (mTradeBlotterConnection != null && mTradeBlotterClient != null) {
+			return mTradeBlotterConnection.isOpen();
+		} else {
+			return false;
+		}
+	}
+	
 }

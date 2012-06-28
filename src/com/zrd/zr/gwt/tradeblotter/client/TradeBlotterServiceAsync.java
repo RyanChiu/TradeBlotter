@@ -13,5 +13,5 @@ public interface TradeBlotterServiceAsync {
 	void testServer(int uid, String name, String blurb,
 			AsyncCallback<String> callback);
 
-	void testServer(AsyncCallback<String> callback);
+	void matrixServer(String methodName, AsyncCallback<String> callback);
 }

@@ -65,11 +65,20 @@
         </table>
     </div>
     
-    <div id="mainPanel" style="display:none">
+       <div id="mainPanelAccess" style="display:none">
+       <table align="center" width="50%">
+           <tr>
+               <td align="left" id="connDisconnButtonContainer"></td>
+               <td colspan="2"></td>
+               <td align="right" id="logoutButtonContainer"></td>
+           </tr>
+           <tr>
+               <td colspan="4"><hr/></td>
+           </tr>
+        </table>
+       </div>
+       <div id="mainPanelCmds" style="display:none">
 	    <table align="center">
-	        <tr>
-	            <td colspan="4" align="right" id="logoutButtonContainer"></td>
-	        </tr>
 	        <tr>
 	            <td id="readIniButtonContainer"></td>
 	            <td id="runPauseButtonContainer"></td>
@@ -114,6 +123,7 @@
 	            <td colspan="3" id="statusHTMLContainer"></td>
 	        </tr>
 	    </table>
-    </div>
+	</div>
+	
   </body>
 </html>
