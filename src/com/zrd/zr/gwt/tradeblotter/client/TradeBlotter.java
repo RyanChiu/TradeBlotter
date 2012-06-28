@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -55,6 +56,16 @@ public class TradeBlotter implements EntryPoint {
 		final Button connDisconnButton = new Button("Connect");
 		connDisconnButton.addStyleName("linkStyleButton");
 		RootPanel.get("connDisconnButtonContainer").add(connDisconnButton);
+		
+		final Anchor totalAnchor = new Anchor("--");
+		RootPanel.get("totalAnchorContainer").add(totalAnchor);
+		final Anchor successfulAnchor = new Anchor("--");
+		RootPanel.get("successfulAnchorContainer").add(successfulAnchor);
+		final Anchor fnsAnchor = new Anchor("--");
+		RootPanel.get("fnsAnchorContainer").add(fnsAnchor);
+		final Anchor pnlAnchor = new Anchor("--");
+		RootPanel.get("pnlAnchorContainer").add(pnlAnchor);
+		
 		final Button readIniButton = new Button("Read Ini");
 		readIniButton.addStyleName("fullWidthButton");
 		RootPanel.get("readIniButtonContainer").add(readIniButton);
@@ -175,6 +186,7 @@ public class TradeBlotter implements EntryPoint {
 								RootPanel.get("loginPanel").setVisible(false);
 								RootPanel.get("mainPanelAccess").setVisible(true);
 								loginErrorLabel.setHTML("");
+								connDisconnButton.click();
 							} else {
 								loginErrorLabel.setHTML(
 									"<font color='red'>"

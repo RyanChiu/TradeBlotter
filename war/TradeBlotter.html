@@ -5,125 +5,145 @@
 <!-- with a "Quirks Mode" doctype is not supported. -->
 
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <!--                                                               -->
-    <!-- Consider inlining CSS to reduce the number of requested files -->
-    <!--                                                               -->
-    <link type="text/css" rel="stylesheet" href="TradeBlotter.css">
+<!--                                                               -->
+<!-- Consider inlining CSS to reduce the number of requested files -->
+<!--                                                               -->
+<link type="text/css" rel="stylesheet" href="TradeBlotter.css">
 
-    <!--                                           -->
-    <!-- Any title is fine                         -->
-    <!--                                           -->
-    <title>TradeBlotter</title>
-    
-    <!--                                           -->
-    <!-- This script loads your compiled module.   -->
-    <!-- If you add any GWT meta tags, they must   -->
-    <!-- be added before this line.                -->
-    <!--                                           -->
-    <script type="text/javascript" language="javascript" src="tradeblotter/tradeblotter.nocache.js"></script>
-  </head>
+<!--                                           -->
+<!-- Any title is fine                         -->
+<!--                                           -->
+<title>TradeBlotter</title>
 
-  <!--                                           -->
-  <!-- The body can have arbitrary html, or      -->
-  <!-- you can leave the body empty if you want  -->
-  <!-- to create a completely dynamic UI.        -->
-  <!--                                           -->
-  <body>
+<!--                                           -->
+<!-- This script loads your compiled module.   -->
+<!-- If you add any GWT meta tags, they must   -->
+<!-- be added before this line.                -->
+<!--                                           -->
+<script type="text/javascript" language="javascript"
+	src="tradeblotter/tradeblotter.nocache.js"></script>
+</head>
 
-    <!-- OPTIONAL: include this if you want history support -->
-    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
-    
-    <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
-    <noscript>
-      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
-        Your web browser must have JavaScript enabled
-        in order for this application to display correctly.
-      </div>
-    </noscript>
+<!--                                           -->
+<!-- The body can have arbitrary html, or      -->
+<!-- you can leave the body empty if you want  -->
+<!-- to create a completely dynamic UI.        -->
+<!--                                           -->
+<body>
 
-    <h2>TradeBlotter</h2>
-    
-    <div id="loginPanel">
-        <table align="center">
-            <caption>Please Login</caption>
-            <tr>
-                <td>Username:</td>
-                <td id="usernameFieldContainer"></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Password:</td>
-                <td id="passwordFieldContainer"></td>
-                <td id="loginButtonContainer" style="padding-left:10pt"></td>
-            </tr>
-            <tr>
-                <td id="loginErrorLabelContainer" colspan="3" align="center"></td>
-            </tr>
-        </table>
-    </div>
-    
-       <div id="mainPanelAccess" style="display:none">
-       <table align="center" width="50%">
-           <tr>
-               <td align="left" id="connDisconnButtonContainer"></td>
-               <td colspan="2"></td>
-               <td align="right" id="logoutButtonContainer"></td>
-           </tr>
-           <tr>
-               <td colspan="4"><hr/></td>
-           </tr>
-        </table>
-       </div>
-       <div id="mainPanelCmds" style="display:none">
-	    <table align="center">
-	        <tr>
-	            <td id="readIniButtonContainer"></td>
-	            <td id="runPauseButtonContainer"></td>
-	            <td id="inputOrderButtonContainer"></td>
-	            <td id="editOrderButtonContainer"></td>
-	        </tr>
-	        <tr>
-	            <td id="traderOrderBookButtonContainer"></td>
-	            <td id="orderHistoryButtonContainer"></td>
-	            <td id="tradeStatisticsButtonContainer"></td>
-	            <td id="accountSummaryButtonContainer"></td>
-	        </tr>
-	    </table>
-	    <table align="center" width="640">
-	        <tr><td colspan="4"><hr/></td></tr>
-	        <tr>
-	            <td id="">State</td>
-	            <td id="stateFieldContainer"></td>
-	            <td id="" style="padding-left:20pt;">Login</td>
-	            <td id="loginFieldContainer"></td>
-	        </tr>
-	       <tr>
-	            <td id="">Last Update</td>
-	            <td id="lastUpdateFieldContainer"></td>
-	            <td id="" style="padding-left:20pt;"></td>
-	            <td id="resendDataCheckContainer"></td>
-	        </tr>
-	        <tr>
-	            <td id="">Available Cash</td>
-	            <td id="availableCashFieldContainer"></td>
-	            <td id="" style="padding-left:20pt;">Run State</td>
-	            <td id="runStateFieldContainer"></td>
-	        </tr>
-	        <tr>
-	            <td id="">Data Collector</td>
-	            <td id="dataCollectorFieldContainer"></td>
-	            <td id="" style="padding-left:20pt;"></td>
-	            <td id=""></td>
-	        </tr>
-	        <tr>
-	            <td id="">Status</td>
-	            <td colspan="3" id="statusHTMLContainer"></td>
-	        </tr>
-	    </table>
+	<!-- OPTIONAL: include this if you want history support -->
+	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
+
+	<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+	<noscript>
+		<div
+			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+			Your web browser must have JavaScript enabled in order for this
+			application to display correctly.</div>
+	</noscript>
+
+	<h2>TradeBlotter</h2>
+
+	<div id="loginPanel">
+		<table align="center">
+			<caption>Please Login</caption>
+			<tr>
+				<td>Username:</td>
+				<td id="usernameFieldContainer"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+				<td id="passwordFieldContainer"></td>
+				<td id="loginButtonContainer" style="padding-left: 10pt"></td>
+			</tr>
+			<tr>
+				<td id="loginErrorLabelContainer" colspan="3" align="center"></td>
+			</tr>
+		</table>
 	</div>
-	
-  </body>
+
+	<div id="mainPanelAccess" style="display: none">
+		<table align="center" width="50%">
+			<tr>
+				<td align="left" id="connDisconnButtonContainer"></td>
+				<td colspan="2"></td>
+				<td align="right" id="logoutButtonContainer"></td>
+			</tr>
+			<tr>
+				<td colspan="4"><hr /></td>
+			</tr>
+		</table>
+	</div>
+	<div id="mainPanelCmds" style="display: none">
+        <table align="center" style="border: 1px solid;border-collapse: collapse; margin-bottom: 5pt;">
+            <caption>Real Statistics</caption>
+            <tr>
+                <td style="padding-left: 3pt; padding-right: 3pt">total cases:</td>
+                <td id="totalAnchorContainer"></td>
+                <td>,</td>
+                <td style="padding-left: 3pt; padding-right: 3pt">successful cases:</td>
+                <td id="successfulAnchorContainer"></td>
+                <td>,</td>
+                <td style="padding-left: 3pt; padding-right: 3pt">failure/stoploss cases:</td>
+                <td id="fnsAnchorContainer"></td>
+                <td>,</td>
+                <td style="padding-left: 3pt; padding-right: 3pt">PnL:</td>
+                <td id="pnlAnchorContainer"></td>
+            </tr>
+        </table>
+		<table align="center">
+			<tr>
+				<td id="readIniButtonContainer"></td>
+				<td id="runPauseButtonContainer"></td>
+				<td id="inputOrderButtonContainer"></td>
+				<td id="editOrderButtonContainer"></td>
+			</tr>
+			<tr>
+				<td id="traderOrderBookButtonContainer"></td>
+				<td id="orderHistoryButtonContainer"></td>
+				<td id="tradeStatisticsButtonContainer"></td>
+				<td id="accountSummaryButtonContainer"></td>
+			</tr>
+		</table>
+		<table align="center" width="640">
+			<tr>
+				<td colspan="4"><hr /></td>
+			</tr>
+			<tr>
+				<td id="">State</td>
+				<td id="stateFieldContainer"></td>
+				<td id="" style="padding-left: 20pt;">Login</td>
+				<td id="loginFieldContainer"></td>
+			</tr>
+			<tr>
+				<td id="">Last Update</td>
+				<td id="lastUpdateFieldContainer"></td>
+				<td id="" style="padding-left: 20pt;"></td>
+				<td id="resendDataCheckContainer"></td>
+			</tr>
+			<tr>
+				<td id="">Available Cash</td>
+				<td id="availableCashFieldContainer"></td>
+				<td id="" style="padding-left: 20pt;">Run State</td>
+				<td id="runStateFieldContainer"></td>
+			</tr>
+			<tr>
+				<td id="">Data Collector</td>
+				<td id="dataCollectorFieldContainer"></td>
+				<td id="" style="padding-left: 20pt;"></td>
+				<td id=""></td>
+			</tr>
+			<tr>
+				<td id="">Status</td>
+				<td colspan="3" id="statusHTMLContainer"></td>
+			</tr>
+		</table>
+	</div>
+
+</body>
 </html>
