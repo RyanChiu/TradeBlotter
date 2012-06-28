@@ -1,2 +1,0 @@
-serviceClass: com.zrd.zr.gwt.tradeblotter.client.TradeBlotterService
-path: BBD3794C23798E582EAD56087BE27FAC.gwt.rpc

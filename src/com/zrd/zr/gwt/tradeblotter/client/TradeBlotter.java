@@ -338,7 +338,7 @@ public class TradeBlotter implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				runPauseButton.setEnabled(false);
-				statusHTML.setHTML("Processing exit...");
+				statusHTML.setHTML("Processing ping...");
 				mTradeBlotterService.matrixServer(
 					"ping",
 					new AsyncCallback<String>() {

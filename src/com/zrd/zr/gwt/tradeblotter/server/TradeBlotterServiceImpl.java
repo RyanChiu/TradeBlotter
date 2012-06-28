@@ -1,5 +1,7 @@
 package com.zrd.zr.gwt.tradeblotter.server;
 
+import javax.servlet.ServletException;
+
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
@@ -9,6 +11,7 @@ import org.apache.thrift.transport.TTransportException;
 
 import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterService;
 import com.zrd.zr.gwt.tradeblotter.shared.FieldVerifier;
+import com.zrd.zr.thread.tradeblotter.HeartBeatThread;
 import com.zrd.zr.thrift.tradeblotter.Control;
 import com.zrd.zr.thrift.tradeblotter.UserProfile;
 import com.zrd.zr.thrift.tradeblotter.UserStorage;
@@ -23,7 +26,20 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 
 	private TSocket mTradeBlotterConnection;
 	private Control.Client mTradeBlotterClient;
+	private Thread mHeartBeatThread;
 	
+	@Override
+	public void init() throws ServletException {
+		// TODO Auto-generated method stub
+		super.init();
+		/*
+		 * try to keep pinging the server
+		 */
+		//create a thread to hold the timer
+		mHeartBeatThread = new Thread(new HeartBeatThread(this), "HeartBeatThread");
+		mHeartBeatThread.start();
+	}
+
 	@Override
 	public String matrixServer(String methodName) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
@@ -161,7 +177,7 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 		}
 	}
 	
-	private boolean isConnected() {
+	public boolean isConnected() {
 		if (mTradeBlotterConnection != null && mTradeBlotterClient != null) {
 			return mTradeBlotterConnection.isOpen();
 		} else {
@@ -169,4 +185,7 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 		}
 	}
 	
+	public Control.Client getTradeBlotterClient() {
+		return mTradeBlotterClient;
+	}
 }
