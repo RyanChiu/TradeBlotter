@@ -255,7 +255,7 @@ public class TradeBlotter implements EntryPoint {
 								
 							}
 						);
-					} else {
+					} else if (connDisconnButton.getText().equals("Disconnect")) {
 						connDisconnButton.setText("Disconnecting...");
 						connDisconnButton.setEnabled(false);
 						RootPanel.get("mainPanelCmds").setVisible(true);
@@ -288,7 +288,7 @@ public class TradeBlotter implements EntryPoint {
 					
 				}
 			}
-			
+
 		});
 		
 		logoutButton.addClickHandler(new ClickHandler() {
@@ -324,6 +324,8 @@ public class TradeBlotter implements EntryPoint {
 							msgInfoHTML.setHTML(result);
 							msgDlg.center();
 							msgOKButton.setFocus(true);
+							connDisconnButton.setText("Connect");
+							connDisconnButton.setEnabled(true);
 						}
 						
 					}
