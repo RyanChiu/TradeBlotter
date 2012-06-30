@@ -26,8 +26,18 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 
 	private TSocket mTradeBlotterConnection;
 	private Control.Client mTradeBlotterClient;
-	private Thread mHeartBeatThread;
+	private HeartBeatThread mHeartBeatThread;
 	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		if (mHeartBeatThread != null) {
+			mHeartBeatThread.stopme();
+		}
+		
+		super.destroy();
+	}
+
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
@@ -36,7 +46,7 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 		 * try to keep pinging the server
 		 */
 		//create a thread to hold the timer
-		mHeartBeatThread = new Thread(new HeartBeatThread(this), "HeartBeatThread");
+		mHeartBeatThread = new HeartBeatThread(this);
 		mHeartBeatThread.start();
 	}
 
@@ -63,6 +73,10 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 			} else {
 				try {
 					connect();
+					if (mHeartBeatThread.stopped()) {
+						mHeartBeatThread = new HeartBeatThread(this);
+						mHeartBeatThread.start();
+					}
 					return "connected";
 				} catch (TTransportException e) {
 					// TODO Auto-generated catch block
@@ -71,6 +85,7 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 				}
 			}
 		} else if (methodName.equals("disconnect")) {
+			mHeartBeatThread.stopme();
 			if (isConnected()) {
 				mTradeBlotterConnection.close();
 				return "disconnected";
@@ -144,6 +159,10 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 		/*
 		 * deal with the command that send from the client
 		 */
+		if (input.equals("logout")) {
+			mHeartBeatThread.stopme();
+			mTradeBlotterConnection.close();
+		}
 		
 		return "Trying to get the info by sending the following command:<br/><b>"
 			+ input + "</b>";

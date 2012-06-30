@@ -1,14 +1,12 @@
 package com.zrd.zr.thread.tradeblotter;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import org.apache.thrift.TException;
 
 import com.zrd.zr.gwt.tradeblotter.server.TradeBlotterServiceImpl;
 
-public class HeartBeatThread implements Runnable {
+public class HeartBeatThread extends Thread {
 
+	private volatile boolean stop = false;
 	private TradeBlotterServiceImpl service;
 	
 	public HeartBeatThread(TradeBlotterServiceImpl service) {
@@ -18,15 +16,13 @@ public class HeartBeatThread implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		Timer timer = new Timer();
-		timer.schedule(new pingTask(), 500, 2000);
-	}
-
-	private class pingTask extends TimerTask {
-		
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
+		while (!stop) {
+			try {
+				sleep(2000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			if (service != null && service.isConnected() && service.getTradeBlotterClient() != null) {
 				try {
 					service.getTradeBlotterClient().ping();
@@ -36,6 +32,14 @@ public class HeartBeatThread implements Runnable {
 				}
 			}
 		}
-		
 	}
+	
+	public void stopme() {
+		stop = true;
+	}
+
+	public boolean stopped() {
+		return stop;
+	}
+	
 }
