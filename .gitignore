@@ -1,4 +1,5 @@
 gwt-unitCache/
-war/WEB-INF/classes
-war/WEB-INF/deploy
-war/tradeblotter/*.html
+tradeblotter/
+war/WEB-INF/classes/
+war/WEB-INF/deploy/
+war/tradeblotter/
