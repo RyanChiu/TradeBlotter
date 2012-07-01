@@ -11,7 +11,7 @@ import org.apache.thrift.transport.TTransportException;
 
 import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterService;
 import com.zrd.zr.gwt.tradeblotter.shared.FieldVerifier;
-import com.zrd.zr.thread.tradeblotter.HeartBeatThread;
+import com.zrd.zr.thread.tradeblotter.HeartbeatThread;
 import com.zrd.zr.thrift.tradeblotter.Control;
 import com.zrd.zr.thrift.tradeblotter.UserProfile;
 import com.zrd.zr.thrift.tradeblotter.UserStorage;
@@ -26,13 +26,13 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 
 	private TSocket mTradeBlotterConnection;
 	private Control.Client mTradeBlotterClient;
-	private HeartBeatThread mHeartBeatThread;
+	private HeartbeatThread mHeartbeatThread;
 	
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		if (mHeartBeatThread != null) {
-			mHeartBeatThread.stopme();
+		if (mHeartbeatThread != null) {
+			mHeartbeatThread.stopme();
 		}
 		
 		super.destroy();
@@ -46,8 +46,8 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 		 * try to keep pinging the server
 		 */
 		//create a thread to hold the timer
-		mHeartBeatThread = new HeartBeatThread(this);
-		mHeartBeatThread.start();
+		mHeartbeatThread = new HeartbeatThread(this);
+		mHeartbeatThread.start();
 	}
 
 	@Override
@@ -73,9 +73,9 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 			} else {
 				try {
 					connect();
-					if (mHeartBeatThread.stopped()) {
-						mHeartBeatThread = new HeartBeatThread(this);
-						mHeartBeatThread.start();
+					if (mHeartbeatThread.stopped()) {
+						mHeartbeatThread = new HeartbeatThread(this);
+						mHeartbeatThread.start();
 					}
 					return "connected";
 				} catch (TTransportException e) {
@@ -85,7 +85,7 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 				}
 			}
 		} else if (methodName.equals("disconnect")) {
-			mHeartBeatThread.stopme();
+			mHeartbeatThread.stopme();
 			if (isConnected()) {
 				mTradeBlotterConnection.close();
 				return "disconnected";
@@ -160,7 +160,7 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 		 * deal with the command that send from the client
 		 */
 		if (input.equals("logout")) {
-			mHeartBeatThread.stopme();
+			mHeartbeatThread.stopme();
 			mTradeBlotterConnection.close();
 		}
 		
