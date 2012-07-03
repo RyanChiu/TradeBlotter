@@ -1,10 +1,6 @@
 package com.zrd.zr.gwt.tradeblotter.server;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
-
-import net.zschech.gwt.comet.server.CometServlet;
-import net.zschech.gwt.comet.server.CometSession;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -15,7 +11,6 @@ import org.apache.thrift.transport.TTransportException;
 
 import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterService;
 import com.zrd.zr.gwt.tradeblotter.shared.FieldVerifier;
-import com.zrd.zr.gwt.tradeblotter.shared.StatsStruc;
 import com.zrd.zr.thread.tradeblotter.HeartbeatThread;
 import com.zrd.zr.thrift.tradeblotter.Control;
 import com.zrd.zr.thrift.tradeblotter.UserProfile;
@@ -61,15 +56,6 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 		if (methodName.equals("ping")) {
 			if (isConnected()) {
 				try {
-						/**
-						 * test for the comet for the moment
-						 */
-						HttpSession httpSession = getThreadLocalRequest().getSession();
-						CometSession cometSession = CometServlet.getCometSession(httpSession);
-						StatsStruc stats = new StatsStruc();
-						stats.total_cases = (mHeartbeatThread != null ? mHeartbeatThread.times() : 0);
-						cometSession.enqueue(stats);
-					
 					mTradeBlotterClient.ping();
 					return "<font color='blue'>\"ping\" executed.</font><br/>";
 				} catch (TException e) {
