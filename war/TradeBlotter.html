@@ -70,36 +70,48 @@
 	<div id="mainPanelAccess" style="display: none">
 		<table align="center" width="50%">
 			<tr>
-				<td align="left" id="connDisconnButtonContainer"></td>
-				<td colspan="2"></td>
-				<td align="right" id="logoutButtonContainer"></td>
+				<td>
+					<table width="100%">
+						<tr>
+							<td align="left" id="connDisconnButtonContainer"></td>
+							<td colspan="2"></td>
+							<td align="right" id="logoutButtonContainer"></td>
+						</tr>
+					</table>
+				</td>
 			</tr>
 			<tr>
-                <td id="">Status</td>
-                <td colspan="3" align="left" id="statusHTMLContainer"></td>
-            </tr>
-			<tr>
-				<td colspan="4"><hr/></td>
+				<td>
+				    <table width="100%" style="border: 1px solid; border-collapse: collapse; margin-bottom: 5pt;">
+				        <tr>
+                            <td style="padding: 2pt 3pt 2pt 3pt">Status:</td>
+                            <td id="statusHTMLContainer"></td>
+                        </tr>
+ 				    </table>
+				</td>
 			</tr>
 		</table>
 	</div>
 	<div id="mainPanelCmds" style="display: none">
-        <table align="center" style="border: 1px solid;border-collapse: collapse; margin-bottom: 5pt;">
-            <caption>Real Statistics</caption>
-            <tr>
-                <td style="padding-left: 3pt; padding-right: 3pt">total cases:</td>
-                <td id="totalAnchorContainer"></td>
-                <td>,</td>
-                <td style="padding-left: 3pt; padding-right: 3pt">successful cases:</td>
-                <td id="successfulAnchorContainer"></td>
-                <td>,</td>
-                <td style="padding-left: 3pt; padding-right: 3pt">failure/stoploss cases:</td>
-                <td id="fnsAnchorContainer"></td>
-                <td>,</td>
-                <td style="padding-left: 3pt; padding-right: 3pt">PnL:</td>
-                <td id="pnlAnchorContainer"></td>
-            </tr>
-        </table>
+		<table align="center"
+			style="border: 1px solid; border-collapse: collapse; margin-bottom: 5pt;">
+			<caption>Real Statistics</caption>
+			<tr>
+				<td style="padding-left: 3pt; padding-right: 3pt">total cases:</td>
+				<td id="totalAnchorContainer"></td>
+				<td>,</td>
+				<td style="padding-left: 3pt; padding-right: 3pt">successful
+					cases:</td>
+				<td id="successfulAnchorContainer"></td>
+				<td>,</td>
+				<td style="padding-left: 3pt; padding-right: 3pt">failure/stoploss
+					cases:</td>
+				<td id="fnsAnchorContainer"></td>
+				<td>,</td>
+				<td style="padding-left: 3pt; padding-right: 3pt">PnL:</td>
+				<td id="pnlAnchorContainer"></td>
+			</tr>
+		</table>
 		<table align="center">
 			<tr>
 				<td id="readIniButtonContainer"></td>
