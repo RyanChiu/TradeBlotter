@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         version="2.5"
-         xmlns="http://java.sun.com/xml/ns/javaee">
+	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
 
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>tradeBlotterServlet</servlet-name>
-    <servlet-class>com.zrd.zr.gwt.tradeblotter.server.TradeBlotterServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>tradeBlotterServlet</servlet-name>
-    <url-pattern>/tradeblotter/greet</url-pattern>
-  </servlet-mapping>
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>TradeBlotter.html</welcome-file>
-  </welcome-file-list>
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>tradeBlotterServlet</servlet-name>
+		<servlet-class>com.zrd.zr.gwt.tradeblotter.server.TradeBlotterServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>tradeBlotterServlet</servlet-name>
+		<url-pattern>/tradeblotter/greet</url-pattern>
+	</servlet-mapping>
+
+	<!-- Listener for shutting down the comet processor when the ServletContext 
+		is destroyed -->
+	<listener>
+		<listener-class>net.zschech.gwt.comet.server.CometServletContextListener</listener-class>
+	</listener>
+
+	<!-- Listener for invalidating CometSessions when HTTPSessions are invalidated -->
+	<listener>
+		<listener-class>net.zschech.gwt.comet.server.CometHttpSessionListener</listener-class>
+	</listener>
+
+	<!-- the comet servlet for streaming messages to the client -->
+	<servlet>
+		<servlet-name>tradeBlotterCometServlet</servlet-name>
+		<servlet-class>net.zschech.gwt.comet.server.CometServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>tradeBlotterCometServlet</servlet-name>
+		<url-pattern>/tradeblotter/comet</url-pattern>
+	</servlet-mapping>
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>TradeBlotter.html</welcome-file>
+	</welcome-file-list>
 
 </web-app>

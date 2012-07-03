@@ -1,3 +1,4 @@
+*.war
 gwt-unitCache/
 tradeblotter/
 war/WEB-INF/classes/
