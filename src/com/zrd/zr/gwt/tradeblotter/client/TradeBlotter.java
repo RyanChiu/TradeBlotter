@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -141,7 +142,65 @@ public class TradeBlotter implements EntryPoint {
 		msgPanel.add(new HTML("<br/><br/>"));
 		msgPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
 		msgPanel.add(msgOKButton);
-		msgDlg.setWidget(msgPanel);		
+		msgDlg.setWidget(msgPanel);
+		msgOKButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				logoutButton.setEnabled(true);
+				msgDlg.hide();
+				
+				RootPanel.get("loginPanel").setVisible(true);
+				RootPanel.get("mainPanelAccess").setVisible(false);
+				RootPanel.get("mainPanelCmds").setVisible(false);
+				/*
+				 * then we cancel the sending command
+				 */
+			}
+			
+		});
+		
+		/**
+		 * the "Account Summary" dialog
+		 */
+		final DialogBox accountSummaryDlg = new DialogBox();
+		accountSummaryDlg.setText("Account Summary");
+		accountSummaryDlg.setAnimationEnabled(true);
+		VerticalPanel accountSummaryPanel = new VerticalPanel();
+		accountSummaryPanel.addStyleName("dialogVPanel");
+		final FlexTable accountSummaryTable = new FlexTable();
+		accountSummaryTable.setWidget(0, 0, new Button("Account Balance"));
+		accountSummaryTable.getWidget(0, 0).setWidth("100%");
+		accountSummaryTable.setText(0, 1, "0.00");
+		accountSummaryTable.setWidget(1, 0, new Button("Deposit/Withdrawal"));
+		accountSummaryTable.setText(1, 1, "0.00");
+		accountSummaryTable.setWidget(2, 0, new Button("Margin Requirement"));
+		accountSummaryTable.setText(2, 1, "0.00");
+		accountSummaryTable.setWidget(3, 0, new Button("Profit/Loss"));
+		accountSummaryTable.getWidget(3, 0).setWidth("100%");
+		accountSummaryTable.setText(3, 1, "0.00");
+		accountSummaryTable.setWidget(4, 0, new Button("Commission/Levy"));
+		accountSummaryTable.setText(4, 1, "0.00");
+		accountSummaryTable.setWidget(5, 0, new Button("Current Balance"));
+		accountSummaryTable.setText(5, 1, "0.00");
+		accountSummaryTable.getColumnFormatter().setWidth(0, "200px");
+		accountSummaryPanel.add(accountSummaryTable);
+		accountSummaryPanel.add(new HTML("<br/>"));
+		final Button accountSummaryCloseButton = new Button("Close");
+		accountSummaryPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		accountSummaryPanel.add(accountSummaryCloseButton);
+		accountSummaryDlg.setWidget(accountSummaryPanel);
+		accountSummaryCloseButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				accountSummaryDlg.hide();
+				
+			}
+			
+		});
 
 		/*
 		 * handle the events for the components in GUI
@@ -200,24 +259,6 @@ public class TradeBlotter implements EntryPoint {
 						
 					}
 				);
-			}
-			
-		});
-		
-		msgOKButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				logoutButton.setEnabled(true);
-				msgDlg.hide();
-				
-				RootPanel.get("loginPanel").setVisible(true);
-				RootPanel.get("mainPanelAccess").setVisible(false);
-				RootPanel.get("mainPanelCmds").setVisible(false);
-				/*
-				 * then we cancel the sending command
-				 */
 			}
 			
 		});
@@ -424,6 +465,17 @@ public class TradeBlotter implements EntryPoint {
 						
 					}
 				);
+			}
+			
+		});
+
+		accountSummaryButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				accountSummaryDlg.center();
+				accountSummaryCloseButton.setFocus(true);
 			}
 			
 		});
