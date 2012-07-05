@@ -3,6 +3,10 @@ package com.zrd.zr.gwt.tradeblotter.client;
 
 import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterService;
 import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterServiceAsync;
+import com.zrd.zr.gwt.tradeblotter.shared.MatrixStruc;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -170,24 +174,14 @@ public class TradeBlotter implements EntryPoint {
 		VerticalPanel accountSummaryPanel = new VerticalPanel();
 		accountSummaryPanel.addStyleName("dialogVPanel");
 		final FlexTable accountSummaryTable = new FlexTable();
-		accountSummaryTable.setWidget(0, 0, new Button("Account Balance"));
-		accountSummaryTable.getWidget(0, 0).setWidth("100%");
-		accountSummaryTable.setText(0, 1, "0.00");
-		accountSummaryTable.setWidget(1, 0, new Button("Deposit/Withdrawal"));
-		accountSummaryTable.getWidget(1, 0).setWidth("100%");
-		accountSummaryTable.setText(1, 1, "0.00");
-		accountSummaryTable.setWidget(2, 0, new Button("Margin Requirement"));
-		accountSummaryTable.getWidget(2, 0).setWidth("100%");
-		accountSummaryTable.setText(2, 1, "0.00");
-		accountSummaryTable.setWidget(3, 0, new Button("Profit/Loss"));
-		accountSummaryTable.getWidget(3, 0).setWidth("100%");
-		accountSummaryTable.setText(3, 1, "0.00");
-		accountSummaryTable.setWidget(4, 0, new Button("Commission/Levy"));
-		accountSummaryTable.getWidget(4, 0).setWidth("100%");
-		accountSummaryTable.setText(4, 1, "0.00");
-		accountSummaryTable.setWidget(5, 0, new Button("Current Balance"));
-		accountSummaryTable.getWidget(5, 0).setWidth("100%");
-		accountSummaryTable.setText(5, 1, "0.00");
+		Map<String, Float> asData = new LinkedHashMap<String, Float>(6);
+		asData.put("Account Balance", (float)0.00);
+		asData.put("Deposit/Withdrawal", (float)0.00);
+		asData.put("Margin Requirement", (float)0.00);
+		asData.put("Profit/Loss", (float)0.00);
+		asData.put("Commission/Levy", (float)0.00);
+		asData.put("Current Balance", (float)0.00);
+		fillAccountSummaryTable(accountSummaryTable, asData);
 		accountSummaryTable.getColumnFormatter().setWidth(0, "200px");
 		accountSummaryTable.getColumnFormatter().setWidth(1, "120px");
 		accountSummaryPanel.add(accountSummaryTable);
@@ -280,7 +274,7 @@ public class TradeBlotter implements EntryPoint {
 						RootPanel.get("mainPanelCmds").setVisible(false);
 						mTradeBlotterService.matrixServer(
 							"connect",
-							new AsyncCallback<String>() {
+							new AsyncCallback<MatrixStruc>() {
 
 								@Override
 								public void onFailure(Throwable caught) {
@@ -292,7 +286,7 @@ public class TradeBlotter implements EntryPoint {
 								}
 
 								@Override
-								public void onSuccess(String result) {
+								public void onSuccess(MatrixStruc result) {
 									// TODO Auto-generated method stub
 									connDisconnButton.setText("Disconnect");
 									connDisconnButton.setEnabled(true);
@@ -308,7 +302,7 @@ public class TradeBlotter implements EntryPoint {
 						RootPanel.get("mainPanelCmds").setVisible(true);
 						mTradeBlotterService.matrixServer(
 							"disconnect",
-							new AsyncCallback<String>() {
+							new AsyncCallback<MatrixStruc>() {
 
 								@Override
 								public void onFailure(Throwable caught) {
@@ -320,7 +314,7 @@ public class TradeBlotter implements EntryPoint {
 								}
 
 								@Override
-								public void onSuccess(String result) {
+								public void onSuccess(MatrixStruc result) {
 									// TODO Auto-generated method stub
 									connDisconnButton.setText("Connect");
 									connDisconnButton.setEnabled(true);
@@ -390,7 +384,7 @@ public class TradeBlotter implements EntryPoint {
 				statusHTML.setHTML("Processing ping...");
 				mTradeBlotterService.matrixServer(
 					"ping",
-					new AsyncCallback<String>() {
+					new AsyncCallback<MatrixStruc>() {
 
 						@Override
 						public void onFailure(Throwable caught) {
@@ -400,10 +394,10 @@ public class TradeBlotter implements EntryPoint {
 						}
 
 						@Override
-						public void onSuccess(String result) {
+						public void onSuccess(MatrixStruc result) {
 							// TODO Auto-generated method stub
 							runPauseButton.setEnabled(true);
-							statusHTML.setHTML("<b>Succeed~~~</b><br/>" + result);
+							statusHTML.setHTML("<b>Succeed~~~</b><br/>" + result.message);
 						}
 						
 					}
@@ -479,10 +473,45 @@ public class TradeBlotter implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
+				mTradeBlotterService.matrixServer(
+					"accountSummary",
+					new AsyncCallback<MatrixStruc>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							statusHTML.setHTML(
+								"<font color='red'>"
+								+ caught.toString()
+								+ "</font>"
+							);
+						}
+
+						@Override
+						public void onSuccess(MatrixStruc result) {
+							// TODO Auto-generated method stub
+							fillAccountSummaryTable(accountSummaryTable, result.accountSummaryData);
+						}
+						
+					}
+				);
+				
 				accountSummaryDlg.center();
 				accountSummaryCloseButton.setFocus(true);
 			}
 			
 		});
+	}
+
+	private void fillAccountSummaryTable(FlexTable table, Map<String, Float> data) {
+		// TODO Auto-generated method stub
+		Object[] keys = (Object[]) data.keySet().toArray();
+		int i = 0;
+		for (Object key : keys) {
+			table.setWidget(i, 0, new Button((String) key));
+			table.getWidget(i, 0).setWidth("100%");
+			table.setText(i, 1, data.get(key).toString());
+			i++;
+		}
 	}
 }

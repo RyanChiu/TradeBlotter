@@ -1,5 +1,8 @@
 package com.zrd.zr.gwt.tradeblotter.server;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 
 import org.apache.thrift.TException;
@@ -11,6 +14,7 @@ import org.apache.thrift.transport.TTransportException;
 
 import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterService;
 import com.zrd.zr.gwt.tradeblotter.shared.FieldVerifier;
+import com.zrd.zr.gwt.tradeblotter.shared.MatrixStruc;
 import com.zrd.zr.thread.tradeblotter.HeartbeatThread;
 import com.zrd.zr.thrift.tradeblotter.Control;
 import com.zrd.zr.thrift.tradeblotter.UserProfile;
@@ -51,13 +55,15 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public String matrixServer(String methodName) throws IllegalArgumentException {
+	public MatrixStruc matrixServer(String methodName) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
+		MatrixStruc struc = new MatrixStruc();
 		if (methodName.equals("ping")) {
 			if (isConnected()) {
 				try {
 					mTradeBlotterClient.ping();
-					return "<font color='blue'>\"ping\" executed.</font><br/>";
+					struc.message = "<font color='blue'>\"ping\" executed.</font><br/>";
+					return struc;
 				} catch (TException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -69,7 +75,8 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 			}
 		} else if (methodName.equals("connect")) {
 			if (isConnected()) {
-				return "connected";
+				struc.message = "connected"; 
+				return struc;
 			} else {
 				try {
 					connect();
@@ -77,7 +84,8 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 						mHeartbeatThread = new HeartbeatThread(this);
 						mHeartbeatThread.start();
 					}
-					return "connected";
+					struc.message = "connected"; 
+					return struc;
 				} catch (TTransportException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -88,10 +96,25 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 			mHeartbeatThread.stopme();
 			if (isConnected()) {
 				mTradeBlotterConnection.close();
-				return "disconnected";
+				struc.message = "disconnected"; 
+				return struc;
 			} else {
-				return "disconnected";
+				struc.message = "disconnected"; 
+				return struc;
 			}
+		} else if (methodName.equals("accountSummary")) {
+			/**
+			 * deal with "Account Summary" request
+			 */
+			Map<String, Float> asData = new LinkedHashMap<String, Float>(6);
+			asData.put("Account Balance", (float)2232061.34);
+			asData.put("Deposit/Withdrawal", (float)0.00);
+			asData.put("Margin Requirement", (float)0.00);
+			asData.put("Profit/Loss", (float)0.00);
+			asData.put("Commission/Levy", (float)0.00);
+			asData.put("Current Balance", (float)240906.34);
+			struc.accountSummaryData = asData;
+			return struc;
 		} else {
 			throw new IllegalArgumentException("<font color='red'><b>Illegal method \"" + methodName + "\"</b></font>");
 		}
