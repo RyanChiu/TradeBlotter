@@ -18,7 +18,9 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -196,6 +198,64 @@ public class TradeBlotter implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				accountSummaryDlg.hide();
+				
+			}
+			
+		});
+		
+		/**
+		 * the "Input Order" dialog
+		 */
+		final DialogBox inputOrderDlg = new DialogBox();
+		inputOrderDlg.setText("Input Order");
+		inputOrderDlg.setAnimationEnabled(true);
+		VerticalPanel inputOrderPanel = new VerticalPanel();
+		inputOrderPanel.addStyleName("dialogVPanel");
+		
+		final FlexTable inputOrderTable = new FlexTable();
+		inputOrderTable.setText(0, 0, "Procuct ID");
+		inputOrderTable.setWidget(0, 1, new ListBox());
+		((ListBox)inputOrderTable.getWidget(0, 1)).addItem("TXFG2", "000001");
+		((ListBox)inputOrderTable.getWidget(0, 1)).addItem("000002", "000002");
+		((ListBox)inputOrderTable.getWidget(0, 1)).addItem("000003", "000003");
+		inputOrderTable.setText(1, 0, "Price");
+		inputOrderTable.setWidget(1, 1, new TextBox());
+		inputOrderTable.getWidget(1, 1).setWidth("60pt");
+		inputOrderTable.setWidget(1, 2, new ListBox());
+		((ListBox)inputOrderTable.getWidget(1, 2)).addItem("Fixed", "000001");
+		((ListBox)inputOrderTable.getWidget(1, 2)).addItem("000002", "000002");
+		((ListBox)inputOrderTable.getWidget(1, 2)).addItem("000003", "000003");
+		inputOrderTable.setText(2, 0, "Quantity");
+		inputOrderTable.setWidget(2, 1, new TextBox());
+		inputOrderTable.getWidget(2, 1).setWidth("60pt");
+		inputOrderTable.setWidget(3, 0, new RadioButton("inputOrder", "FOK"));
+		((RadioButton)inputOrderTable.getWidget(3, 0)).setValue(true);
+		inputOrderTable.setWidget(3, 1, new RadioButton("inputOrder", "IOC"));
+		inputOrderTable.setWidget(3, 2, new RadioButton("inputOrder", "ROD"));
+		inputOrderTable.setWidget(4, 0, new Button("Buy"));
+		inputOrderTable.getWidget(4, 0).setWidth("100%");
+		inputOrderTable.setWidget(4, 2, new Button("Sell"));
+		inputOrderTable.getWidget(4, 2).setWidth("100%");
+		inputOrderTable.setWidget(5, 0, new Button("Buy @ A1"));
+		inputOrderTable.getWidget(5, 0).setWidth("100%");
+		inputOrderTable.setWidget(5, 2, new Button("Sell @ A1"));
+		inputOrderTable.getWidget(5, 2).setWidth("100%");
+		inputOrderTable.setWidget(6, 0, new Button("Delete All Outstanding Orders"));
+		inputOrderTable.getWidget(6, 0).setWidth("100%");
+		inputOrderTable.getFlexCellFormatter().setColSpan(6, 0, 3);
+		inputOrderPanel.add(inputOrderTable);
+		
+		inputOrderPanel.add(new HTML("<br/>"));
+		final Button inputOrderCloseButton = new Button("Close");
+		inputOrderPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		inputOrderPanel.add(inputOrderCloseButton);
+		inputOrderDlg.setWidget(inputOrderPanel);
+		inputOrderCloseButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				inputOrderDlg.hide();
 				
 			}
 			
@@ -413,9 +473,9 @@ public class TradeBlotter implements EntryPoint {
 				// TODO Auto-generated method stub
 				inputOrderButton.setEnabled(false);
 				statusHTML.setHTML("Processing input...");
-				mTradeBlotterService.testServer(
-					1, "name_test", "blurb_test",
-					new AsyncCallback<String>() {
+				mTradeBlotterService.matrixServer(
+					"inputOrder",
+					new AsyncCallback<MatrixStruc>() {
 
 						@Override
 						public void onFailure(Throwable caught) {
@@ -425,10 +485,12 @@ public class TradeBlotter implements EntryPoint {
 						}
 
 						@Override
-						public void onSuccess(String result) {
+						public void onSuccess(MatrixStruc result) {
 							// TODO Auto-generated method stub
 							inputOrderButton.setEnabled(true);
-							statusHTML.setHTML("<b>Succeed~~~</b><br/>" + result);
+							statusHTML.setHTML("<b>Succeed~~~</b><br/>");
+							inputOrderDlg.center();
+							inputOrderCloseButton.setFocus(true);
 						}
 						
 					}

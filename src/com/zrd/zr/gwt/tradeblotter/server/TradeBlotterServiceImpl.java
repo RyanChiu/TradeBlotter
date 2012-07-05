@@ -115,6 +115,8 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 			asData.put("Current Balance", (float)240906.34);
 			struc.accountSummaryData = asData;
 			return struc;
+		} else if (methodName.equals("inputOrder")) {
+			return struc;
 		} else {
 			throw new IllegalArgumentException("<font color='red'><b>Illegal method \"" + methodName + "\"</b></font>");
 		}
