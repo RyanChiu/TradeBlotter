@@ -5,6 +5,7 @@ import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterService;
 import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterServiceAsync;
 import com.zrd.zr.gwt.tradeblotter.shared.MatrixStruc;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import com.google.gwt.core.client.EntryPoint;
@@ -129,7 +130,7 @@ public class TradeBlotter implements EntryPoint {
 		final HTML statusHTML = new HTML();
 		RootPanel.get("statusHTMLContainer").add(statusHTML);
 		
-		/*
+		/**
 		 * the dialogs that required to show the status when 
 		 * the client trying to deal with the server
 		 */
@@ -256,6 +257,38 @@ public class TradeBlotter implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				inputOrderDlg.hide();
+				
+			}
+			
+		});
+		
+		/**
+		 * the "Trade Statistic" dialog
+		 */
+		final DialogBox tradeStatsDlg = new DialogBox();
+		tradeStatsDlg.setText("Trade Statistics");
+		tradeStatsDlg.setAnimationEnabled(true);
+		VerticalPanel tradeStatsPanel = new VerticalPanel();
+		tradeStatsPanel.addStyleName("dialogVPanel");
+		
+		final TradeStatsTable tradeStatsTable = new TradeStatsTable();
+		TradeStatsStruc tsRow = new TradeStatsStruc();
+		tradeStatsPanel.add(tradeStatsTable);
+		ArrayList<TradeStatsStruc> tsData = new ArrayList<TradeStatsStruc>();
+		tsData.add(tsRow);
+		tradeStatsTable.showStats(tsData);
+		
+		tradeStatsPanel.add(new HTML("<br/>"));
+		final Button tradeStatsCloseButton = new Button("Close");
+		tradeStatsPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		tradeStatsPanel.add(tradeStatsCloseButton);
+		tradeStatsDlg.setWidget(tradeStatsPanel);
+		tradeStatsCloseButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				tradeStatsDlg.hide();
 				
 			}
 			
@@ -526,6 +559,17 @@ public class TradeBlotter implements EntryPoint {
 						
 					}
 				);
+			}
+			
+		});
+		
+		tradeStatisticsButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				tradeStatsDlg.center();
+				tradeStatsCloseButton.setFocus(true);
 			}
 			
 		});

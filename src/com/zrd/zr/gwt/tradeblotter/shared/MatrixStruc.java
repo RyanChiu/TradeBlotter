@@ -8,4 +8,5 @@ public class MatrixStruc implements IsSerializable {
 	public String message;
 	
 	public Map<String, Float> accountSummaryData;
+
 }

@@ -15,6 +15,15 @@
 		<url-pattern>/tradeblotter/greet</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>remoteLoggingService</servlet-name>
+		<servlet-class>com.google.gwt.gen2.logging.server.RemoteLoggingService</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>remoteLoggingService</servlet-name>
+		<url-pattern>/tradeblotter/logging</url-pattern>
+	</servlet-mapping>
+
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>TradeBlotter.html</welcome-file>
