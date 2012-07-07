@@ -289,7 +289,7 @@ public class TradeStatsTable extends Composite {
             columnDef.setColumnSortable(true);
             columnDef.setColumnTruncatable(false);
             columnDef.setPreferredColumnWidth(55);
-            columnDef.setHeader(0, new HTML("<div style='float:left;'>Id<div>"));
+            columnDef.setHeader(0, new HTML("<div style='float:left;font-weight:bold;'>Id<div>"));
             columnDef.setHeaderCount(1);
             columnDef.setHeaderTruncatable(false);
             tableDefinition.addColumnDefinition(columnDef);
