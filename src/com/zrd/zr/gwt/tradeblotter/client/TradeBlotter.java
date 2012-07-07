@@ -275,6 +275,7 @@ public class TradeBlotter implements EntryPoint {
 		tradeStatsTable.addStyleName(".gwt-ScrollTable");
 		tradeStatsTable.addStyleName(".gwt-ScrollTable .headerTable");
 		tradeStatsTable.addStyleName(".gwt-ScrollTable .dataTable");
+		tradeStatsTable.addStyleName(".gwt-ScrollTable .footerTable");
 		tradeStatsPanel.add(tradeStatsTable);
 		
 		tradeStatsPanel.add(new HTML("<br/>"));
@@ -567,6 +568,8 @@ public class TradeBlotter implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
+				tradeStatisticsButton.setEnabled(false);
+				statusHTML.setHTML("Try to get 'Trade Statistics', please wait a moment...");
 				mTradeBlotterService.matrixServer(
 					"tradeStatistics",
 					new AsyncCallback<MatrixStruc>() {
@@ -574,6 +577,7 @@ public class TradeBlotter implements EntryPoint {
 						@Override
 						public void onFailure(Throwable caught) {
 							// TODO Auto-generated method stub
+							tradeStatisticsButton.setEnabled(true);
 							statusHTML.setHTML(
 								"<font color='red'>"
 								+ caught.toString()
@@ -584,9 +588,11 @@ public class TradeBlotter implements EntryPoint {
 						@Override
 						public void onSuccess(MatrixStruc result) {
 							// TODO Auto-generated method stub
+							tradeStatisticsButton.setEnabled(true);
 							tradeStatsTable.showStats(result.tradeStatsData);
 							tradeStatsDlg.center();
 							tradeStatsCloseButton.setFocus(true);
+							statusHTML.setHTML("<font color='green'>'Trade Statistics' recieved!</font>");
 						}
 						
 					}

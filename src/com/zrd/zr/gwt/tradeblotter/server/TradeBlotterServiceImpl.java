@@ -120,29 +120,50 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 		} else if (methodName.equals("inputOrder")) {
 			return struc;
 		} else if (methodName.equals("tradeStatistics")) {
-			TradeStatsStruc row;
-			ArrayList<TradeStatsStruc> data = new ArrayList<TradeStatsStruc>();
+			struc.tradeStatsData = fakeData();
+			return struc;
+		} else {
+			throw new IllegalArgumentException("<font color='red'><b>Illegal method \"" + methodName + "\"</b></font>");
+		}
+	}
+
+	private ArrayList<TradeStatsStruc> fakeData() {
+		// TODO Auto-generated method stub
+		ArrayList<TradeStatsStruc> data = new ArrayList<TradeStatsStruc>();
+		TradeStatsStruc row;
+		row = new TradeStatsStruc();
+		data.add(row);
+		for (int i = 0; i < 10; i++) {
 			row = new TradeStatsStruc();
-			data.add(row);
-			row = new TradeStatsStruc();
-			row.id = 2;
+			row.id = (i * 4) + 2;
 			row.itemName = "MXFG2";
-			row.in = 3;
-			row.out = 6;
+			row.in = 165;
+			row.out = 105;
 			row.net = row.out - row.in;
 			data.add(row);
 			row = new TradeStatsStruc();
-			row.id = 3;
+			row.id = (i * 4) + 3;
 			row.itemName = "Average Price";
 			row.in = 6400;
 			row.out = 10034;
 			row.net = row.out - row.in;
 			data.add(row);
-			struc.tradeStatsData = data;
-			return struc;
-		} else {
-			throw new IllegalArgumentException("<font color='red'><b>Illegal method \"" + methodName + "\"</b></font>");
+			row = new TradeStatsStruc();
+			row.id = (i * 4) + 4;
+			row.itemName = "TXFG2";
+			row.in = 27;
+			row.out = 42;
+			row.net = row.out - row.in;
+			data.add(row);
+			row = new TradeStatsStruc();
+			row.id = (i * 4) + 5;
+			row.itemName = "Average Price";
+			row.in = (float)7120.33;
+			row.out = (float)7136.21;
+			row.net = row.out - row.in;
+			data.add(row);
 		}
+		return data;
 	}
 
 	@Override
