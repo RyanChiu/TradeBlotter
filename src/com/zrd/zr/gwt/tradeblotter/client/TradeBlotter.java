@@ -5,7 +5,6 @@ import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterService;
 import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterServiceAsync;
 import com.zrd.zr.gwt.tradeblotter.shared.MatrixStruc;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import com.google.gwt.core.client.EntryPoint;
@@ -16,6 +15,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -265,18 +265,17 @@ public class TradeBlotter implements EntryPoint {
 		/**
 		 * the "Trade Statistic" dialog
 		 */
-		final DialogBox tradeStatsDlg = new DialogBox();
-		tradeStatsDlg.setText("Trade Statistics");
+		final DecoratedPopupPanel tradeStatsDlg = new DecoratedPopupPanel(false, false);
 		tradeStatsDlg.setAnimationEnabled(true);
 		VerticalPanel tradeStatsPanel = new VerticalPanel();
 		tradeStatsPanel.addStyleName("dialogVPanel");
+		tradeStatsPanel.add(new HTML("<b>Trade Statistics</b><br/>"));
 		
 		final TradeStatsTable tradeStatsTable = new TradeStatsTable();
-		TradeStatsStruc tsRow = new TradeStatsStruc();
+		tradeStatsTable.addStyleName(".gwt-ScrollTable");
+		tradeStatsTable.addStyleName(".gwt-ScrollTable .headerTable");
+		tradeStatsTable.addStyleName(".gwt-ScrollTable .dataTable");
 		tradeStatsPanel.add(tradeStatsTable);
-		ArrayList<TradeStatsStruc> tsData = new ArrayList<TradeStatsStruc>();
-		tsData.add(tsRow);
-		tradeStatsTable.showStats(tsData);
 		
 		tradeStatsPanel.add(new HTML("<br/>"));
 		final Button tradeStatsCloseButton = new Button("Close");
@@ -568,8 +567,30 @@ public class TradeBlotter implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				tradeStatsDlg.center();
-				tradeStatsCloseButton.setFocus(true);
+				mTradeBlotterService.matrixServer(
+					"tradeStatistics",
+					new AsyncCallback<MatrixStruc>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							statusHTML.setHTML(
+								"<font color='red'>"
+								+ caught.toString()
+								+ "</font>"
+							);
+						}
+
+						@Override
+						public void onSuccess(MatrixStruc result) {
+							// TODO Auto-generated method stub
+							tradeStatsTable.showStats(result.tradeStatsData);
+							tradeStatsDlg.center();
+							tradeStatsCloseButton.setFocus(true);
+						}
+						
+					}
+				);
 			}
 			
 		});

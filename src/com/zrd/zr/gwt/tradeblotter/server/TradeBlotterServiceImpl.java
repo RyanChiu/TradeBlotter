@@ -1,5 +1,6 @@
 package com.zrd.zr.gwt.tradeblotter.server;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
 import com.zrd.zr.gwt.tradeblotter.client.TradeBlotterService;
+import com.zrd.zr.gwt.tradeblotter.client.TradeStatsStruc;
 import com.zrd.zr.gwt.tradeblotter.shared.FieldVerifier;
 import com.zrd.zr.gwt.tradeblotter.shared.MatrixStruc;
 import com.zrd.zr.thread.tradeblotter.HeartbeatThread;
@@ -116,6 +118,27 @@ public class TradeBlotterServiceImpl extends RemoteServiceServlet implements
 			struc.accountSummaryData = asData;
 			return struc;
 		} else if (methodName.equals("inputOrder")) {
+			return struc;
+		} else if (methodName.equals("tradeStatistics")) {
+			TradeStatsStruc row;
+			ArrayList<TradeStatsStruc> data = new ArrayList<TradeStatsStruc>();
+			row = new TradeStatsStruc();
+			data.add(row);
+			row = new TradeStatsStruc();
+			row.id = 2;
+			row.itemName = "MXFG2";
+			row.in = 3;
+			row.out = 6;
+			row.net = row.out - row.in;
+			data.add(row);
+			row = new TradeStatsStruc();
+			row.id = 3;
+			row.itemName = "Average Price";
+			row.in = 6400;
+			row.out = 10034;
+			row.net = row.out - row.in;
+			data.add(row);
+			struc.tradeStatsData = data;
 			return struc;
 		} else {
 			throw new IllegalArgumentException("<font color='red'><b>Illegal method \"" + methodName + "\"</b></font>");
