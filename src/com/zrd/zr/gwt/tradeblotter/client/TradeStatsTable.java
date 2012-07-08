@@ -1,7 +1,6 @@
 package com.zrd.zr.gwt.tradeblotter.client;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -94,27 +93,6 @@ public class TradeStatsTable extends Composite {
 		return end - start;
 	}
 	
-	/**
-     * {@link Comparator} for sorting by {@link TradeStatsStruc} ID
-     */
-    public final static class IdComparator implements Comparator<TradeStatsStruc> {
- 
-        private final boolean ascending;
- 
-        public IdComparator(boolean ascending) { this.ascending = ascending; }
- 
-        @Override
-        public int compare(TradeStatsStruc t1, TradeStatsStruc t2) {
-            final Long id1 = t1.id; 
-            final Long id2 = t2.id; 
-            if(ascending) { 
-                return id1.compareTo(id2);
-            } else { 
-                return id2.compareTo(id1);
-            }
-        }
-    }
-	
 	private class DataSourceTableModel extends MutableTableModel<TradeStatsStruc> {
 		// knows how to sort
         private TradeStatsSorter sorter = new TradeStatsSorter();
@@ -172,13 +150,14 @@ public class TradeStatsTable extends Composite {
                     final int col = request.getColumnSortList().getPrimaryColumn();
                     final boolean ascending = request.getColumnSortList().isPrimaryAscending();
                     if(col < 0) {
-                        map = sorter.sort(map, new IdComparator(ascending));
+                        map = sorter.sort(map, new TradeStatsSorter.IdComparator(ascending));
                     } else {
                         switch(col) {
                         case 0:
-                            map = sorter.sort(map, new IdComparator(ascending));
+                            map = sorter.sort(map, new TradeStatsSorter.IdComparator(ascending));
                             break;
                         case 1:
+                        	map = sorter.sort(map, new TradeStatsSorter.TextComparator(ascending));
                             break;
                         case 2:
                             break;
@@ -289,7 +268,7 @@ public class TradeStatsTable extends Composite {
             columnDef.setColumnSortable(true);
             columnDef.setColumnTruncatable(false);
             columnDef.setPreferredColumnWidth(55);
-            columnDef.setHeader(0, new HTML("<div style='float:left;font-weight:bold;'>Id<div>"));
+            columnDef.setHeader(0, new HTML("<div style='float:left;'>Id<div>"));
             columnDef.setHeaderCount(1);
             columnDef.setHeaderTruncatable(false);
             tableDefinition.addColumnDefinition(columnDef);
@@ -313,7 +292,7 @@ public class TradeStatsTable extends Composite {
             columnDef.setColumnSortable(true);
             columnDef.setColumnTruncatable(false);
             columnDef.setPreferredColumnWidth(80);
-            columnDef.setHeader(0, new HTML("In"));
+            columnDef.setHeader(0, new HTML("<div style='float:left;'>In</div>"));
             columnDef.setHeaderCount(1);
             columnDef.setHeaderTruncatable(false);
             tableDefinition.addColumnDefinition(columnDef);
@@ -325,7 +304,7 @@ public class TradeStatsTable extends Composite {
             columnDef.setColumnSortable(true);
             columnDef.setColumnTruncatable(false);
             columnDef.setPreferredColumnWidth(80);
-            columnDef.setHeader(0, new HTML("Out"));
+            columnDef.setHeader(0, new HTML("<div style='float:left;'>Out</div>"));
             columnDef.setHeaderCount(1);
             columnDef.setHeaderTruncatable(false);
             tableDefinition.addColumnDefinition(columnDef);
@@ -337,7 +316,7 @@ public class TradeStatsTable extends Composite {
             columnDef.setColumnSortable(true);
             columnDef.setColumnTruncatable(false);
             columnDef.setPreferredColumnWidth(80);
-            columnDef.setHeader(0, new HTML("Net"));
+            columnDef.setHeader(0, new HTML("<div style='float:left;'>Net</div>"));
             columnDef.setHeaderCount(1);
             columnDef.setHeaderTruncatable(false);
             tableDefinition.addColumnDefinition(columnDef);
